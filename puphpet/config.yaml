@@ -215,7 +215,7 @@ php:
                 listen: '127.0.0.1:9000'
                 user: www-user
                 group: www-data
-                security.limit_extensions: '0'
+                security.limit_extensions: FALSE
     composer: '1'
     composer_home: ''
 xdebug:

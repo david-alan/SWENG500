@@ -1,0 +1,118 @@
+    1  vim /var/lib/puppet/state/state.yaml 
+    2  sudo apt-get install vim
+    3  vim /var/lib/puppet/state/state.yaml 
+    4  sudo vim /var/lib/puppet/state/state.yaml 
+    5  exit
+    6  pwd
+    7  cd /var/www/
+    8  ls
+    9  cd productfinder/
+   10  ls
+   11  exit
+   12  sudo curl -LsS http://symfony.com/installer -o /usr/local/bin/symfony
+   13  sudo chmod a+x /usr/local/bin/symfony
+   14  symfony
+   15  pwd
+   16  symfony new test_symfony
+   17  ls -lah
+   18  rm -rf test_symfony/
+   19  cd ..
+   20  ls -lah
+   21  pwd
+   22  cd /var/www/
+   23  ls
+   24  ls productfinder/
+   25  ls -lah
+   26  rmdir productfinder/
+   27  symfony new productfinder
+   28  ls -lah
+   29  sudo updatedb
+   30  exit
+   31  locate httpd.conf
+   32  sudo apachectl status
+   33  sudo apachectl stop
+   34  sudo apachectl start
+   35  sudo apachectl 
+   36  sudo apachectl -h
+   37  ps -ef  | grep apache
+   38  sudo /usr/sbin/apache2 -V | SERVER_CONFIG_FILE
+   39  sudo /usr/sbin/apache2 -V | grep SERVER_CONFIG_FILE
+   40  locate apache2.conf
+   41  vim /etc/apache2/apache2.conf 
+   42  ps aux | grep php
+   43  sudo /usr/sbin/apache2 -V 
+   44  sudo vim /etc/apache2/apache2.conf 
+   45  sudo service apache stop
+   46  sudo service apache2 stop
+   47  sudo service apache2 start
+   48  pwd
+   49  cd /var/www/productfinder/
+   50  ls
+   51  vim web/index.php
+   52  vim index.php
+   53  reset
+   54  ls -lah
+   55  ls -lah
+   56  chmod 777 index.php 
+   57  rm index.php 
+   58  sudo vim /etc/apache2/apache2.conf 
+   59  sudo vim /etc/apache2/apache2.conf 
+   60  reset
+   61  exit
+   62  sudo vim /etc/apache2/apache2.conf 
+   63  sudo service apache2 restart
+   64  pwd
+   65  cd /var/www/
+   66  ls
+   67  cd productfinder/
+   68  ls
+   69  touch test.html
+   70  touch test.php
+   71  ls web/
+   72  vim web/app_dev.php 
+   73  ls -laht /var/log/apache2/
+   74  tail -f  /var/log/apache2/av_sj0qd1mk0yw6_access.log 
+   75  tail -f  /var/log/apache2/av_sj0qd1mk0yw6_error.log 
+   76  locate www.conf
+   77  vim /etc/php5/fpm/pool.d/www.conf 
+   78  sudo vim /etc/php5/fpm/pool.d/www.conf 
+   79  service php5-fpm restart
+   80  sudo service php5-fpm restart
+   81  tail -f  /var/log/apache2/av_sj0qd1mk0yw6_error.log 
+   82  sudo vim /etc/php5/fpm/php.ini 
+   83  vim ~/.bashrc
+   84  source ~/.bashrc 
+   85  fixstuff
+   86  sudo vim /etc/php5/fpm/php.ini 
+   87  fixstuff
+   88  locate fastcgi.conf
+   89  sudo updatedb
+   90  locate fastcgi.conf
+   91  history | grep vim
+   92  sudo  vim /etc/php5/fpm/pool.d/www.conf
+   93  fixstuff
+   94  cd /var/www/productfinder/
+   95  vim web/app_dev.php 
+   96  pwd
+   97  ls
+   98  exit
+   99  pwd
+  100  cd /var/www/productfinder/
+  101  ls
+  102  vim ~/.bashrc
+  103  vim ~/.bashrc
+  104  source ~/.bashrc 
+  105  ls
+  106  composer install
+  107  locate phpunit.xml
+  108  cd app/
+  109  ls
+  110  cp phpunit.xml.dist phpunit.xml
+  111  phpunit
+  112  exit
+  113  sudo service apache2 stop
+  114  sudo service apache2 start
+  115  loacate index.html.twig
+  116  locate index.html.twig
+  117  ls
+  118  history > history.txt
