@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -28,10 +29,42 @@ class DefaultController extends Controller
      */
     public function searchAction(Request $request)
     {
+        $city = '';
+        if(!$this->container->get('session')->isStarted()){
+            $session = new Session();
+        } else {
+            $session = $this->container->get('session');
+        }
+
+        $session->start();
+        $sessionId = $session->getId();
 		var_dump($request->request->get('searchQuery'));
-		$connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
-$channel = $connection->channel();
-		
+        $searchTerm = $request->request->get('searchQuery');
+        var_dump($sessionId);
+        $queueName ='searchTerms';
+
+        $queueValue = $searchTerm . ':' . $city . ':' . time();
+        //http://stackoverflow.com/questions/14699873/how-to-reset-user-for-rabbitmq-management
+
+        $exchangeName = 'products';
+
+        $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
+        $channel = $connection->channel();
+        $channel->exchange_declare($exchangeName, 'fanout', false, false, false);
+
+
+        //$channel->queue_declare($queueName, false, false, false, false);
+
+        $msg = new AMQPMessage($queueValue); //time tells us when to prune/expire old entries from cache
+        $channel->basic_publish($msg, $exchangeName, $queueName);
+
+        echo " [x] Sent $queueValue\n";
+
+
+        $channel->close();
+        $connection->close();
+
+
         return $this->render('default/searchResults.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
         ));
