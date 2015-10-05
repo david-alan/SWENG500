@@ -19,6 +19,11 @@ class User
     /**
      * @ORM\Column(type="string", length=100)
      */
+    protected $email;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
     protected $userName;
     
     /**
@@ -58,6 +63,30 @@ class User
     public function getUserName()
     {
         return $this->userName;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
     }
 
     /**
