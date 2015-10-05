@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use AppBundle\Entity\Product;
 
 class DefaultController extends Controller
 {
@@ -41,29 +42,57 @@ class DefaultController extends Controller
 		var_dump($request->request->get('searchQuery'));
         $searchTerm = $request->request->get('searchQuery');
         var_dump($sessionId);
-        $queueName ='searchTerms';
-
-        $queueValue = $searchTerm . ':' . $city . ':' . time();
-        //http://stackoverflow.com/questions/14699873/how-to-reset-user-for-rabbitmq-management
-
-        $exchangeName = 'products';
-
-        $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
-        $channel = $connection->channel();
-        $channel->exchange_declare($exchangeName, 'fanout', false, false, false);
 
 
-        //$channel->queue_declare($queueName, false, false, false, false);
 
-        $msg = new AMQPMessage($queueValue); //time tells us when to prune/expire old entries from cache
-        $channel->basic_publish($msg, $exchangeName, $queueName);
+        //check to see if keyword exists in product table
+        $repository = $this->getDoctrine()
+            ->getRepository('AppBundle:Product');
+        $product = $repository->findByName($searchTerm);
 
-        echo " [x] Sent $queueValue\n";
+        var_dump($product);
+
+        if($product != null) //cache hit - return results from mysql table
+        {
+            return $this->render('default/searchResults.html.twig', array(
+                'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
+            ));
+        } else { //cache miss - invoke scrapers
+            // put it in the queue
+            $queueName ='searchTerms';
+
+            $queueValue = $searchTerm . ':' . $city . ':' . time();
+            //http://stackoverflow.com/questions/14699873/how-to-reset-user-for-rabbitmq-management
+
+            $exchangeName = 'products';
+
+            $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
+            $channel = $connection->channel();
+            $channel->exchange_declare($exchangeName, 'fanout', false, false, false);
+
+            //$channel->queue_declare($queueName, false, false, false, false);
+
+            $msg = new AMQPMessage($queueValue); //time tells us when to prune/expire old entries from cache
+            $channel->basic_publish($msg, $exchangeName, $queueName);
+
+            echo " [x] Sent $queueValue\n";
+
+            $channel->close();
+            $connection->close();
+
+            return $this->render('default/searchResults.html.twig', array(
+                'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
+            ));
+        }
 
 
-        $channel->close();
-        $connection->close();
+/*
 
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($product);
+        $em->flush();
+*/
 
         return $this->render('default/searchResults.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
