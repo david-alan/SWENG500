@@ -8,19 +8,38 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+use AppBundle\Entity\User;
+use AppBundle\Entity\Product;
+use AppBundle\Form\User\LoginType;
+use AppBundle\Form\User\CreateAccountType;
+
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
-use AppBundle\Entity\Product;
 
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="homePage")
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
+        $session = $request->getSession();
+        $session->start();
+        var_dump($session->get('userName'));
+
+        $userName = $session->get('userName');
         return $this->render('default/index.html.twig', array(
+            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
+            'userName' => $userName
+        ));
+    }
+
+    /**
+     * @Route("/createAccount", name="newaccountpage")
+     */
+    public function createAccountAction(Request $request)
+    {
+        return $this->render('login/createAccount.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
         ));
     }
@@ -37,13 +56,11 @@ class DefaultController extends Controller
             $session = $this->container->get('session');
         }
 
-        $session->start();
+        $session->start();//maybe use session->getSession() or something?
         $sessionId = $session->getId();
-		var_dump($request->request->get('searchQuery'));
+		//var_dump($request->request->get('searchQuery'));
         $searchTerm = $request->request->get('searchQuery');
-        var_dump($sessionId);
-
-
+        //var_dump($sessionId);
 
         //check to see if keyword exists in product table
         $repository = $this->getDoctrine()
@@ -56,6 +73,7 @@ class DefaultController extends Controller
         {
             return $this->render('default/searchResults.html.twig', array(
                 'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
+                'searchResults' => $product,
             ));
         } else { //cache miss - invoke scrapers
             // put it in the queue
@@ -85,17 +103,67 @@ class DefaultController extends Controller
             ));
         }
 
-
-/*
-
-        $em = $this->getDoctrine()->getManager();
-
-        $em->persist($product);
-        $em->flush();
-*/
-
         return $this->render('default/searchResults.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
+        ));
+    }
+
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logout(Request $request)
+    {
+        $session = $request->getSession();
+        $session->invalidate();
+        return $this->redirectToRoute('homePage');
+    }
+
+    /**
+     * @Route("/login", name="loginForm")
+     */
+    public function loginForm(Request $request)
+    {
+        $user = new User();
+        $loginForm = $this->createForm(new LoginType(), $user);
+        $createAccountForm = $this->createForm(new CreateAccountType(), $user);
+
+        $loginForm->handleRequest($request);
+        $createAccountForm->handleRequest($request);
+
+        $session = $request->getSession();
+        $session->start();
+
+        if($loginForm->isValid()) {
+            try {
+                $repository = $this->getDoctrine()->getRepository(User::class);
+                $userSearch = $repository->findOneByEmail($user->getEmail());
+
+                $session->set('userName',$userSearch->getEmail());
+                return $this->redirectToRoute('homePage');
+            } catch (\Exception $e) {
+                //TODO: add flashbag error for db errors
+                return $this->redirectToRoute('loginForm');
+            }
+        }
+
+        if($createAccountForm->isValid()) {
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+            } catch (\Exception $e) {
+                //TODO: add flashbag error for duplicate username
+                return $this->redirectToRoute('loginForm');
+            }
+
+            $formData = $request->request->get('createAccount');
+            $session->set('userName',$formData['email']);
+            return $this->redirectToRoute('homePage');
+        }
+
+        return $this->render('login/loginForm.html.twig', array(
+            'loginForm' => $loginForm->createView(),
+            'createAccountForm' => $createAccountForm->createView()
         ));
     }
 

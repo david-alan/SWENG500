@@ -17,19 +17,14 @@ class User
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, unique=true)
      */
     protected $email;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    protected $userName;
-    
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    protected $hashedPassword;
+    protected $password;
 
     /**
      * Get id
@@ -39,30 +34,6 @@ class User
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set userName
-     *
-     * @param string $userName
-     *
-     * @return User
-     */
-    public function setUserName($userName)
-    {
-        $this->userName = $userName;
-
-        return $this;
-    }
-
-    /**
-     * Get userName
-     *
-     * @return string
-     */
-    public function getUserName()
-    {
-        return $this->userName;
     }
 
     /**
@@ -96,9 +67,9 @@ class User
      *
      * @return User
      */
-    public function setHashedPassword($hashedPassword)
+    public function setPassword($password)
     {
-        $this->hashedPassword = $hashedPassword;
+        $this->password = $password;
 
         return $this;
     }
@@ -108,10 +79,21 @@ class User
      *
      * @return string
      */
-    public function getHashedPassword()
+    public function getPassword()
     {
-        return $this->hashedPassword;
+        return $this->password;
     }
+
+    public function getPlaintextPassword()
+    {
+        return $this->plaintextPassword;
+    }
+
+    public function setPlaintextPassword($password)
+    {
+        $this->plaintextPassword = $password;
+    }
+
 
     /**
      * @return bool
