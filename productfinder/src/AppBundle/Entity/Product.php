@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="product")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Product
 {
@@ -28,9 +29,29 @@ class Product
     protected $price;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $description;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $uri;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    protected $imagePath;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $createdAt;
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new \DateTime());
+    }
 
     /**
      * Get id
@@ -64,6 +85,30 @@ class Product
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set image path
+     *
+     * @param string $path
+     *
+     * @return Product
+     */
+    public function setImagePath($path)
+    {
+        $this->imagePath = $path;
+
+        return $this;
+    }
+
+    /**
+     * Get image path
+     *
+     * @return string
+     */
+    public function getImagePath()
+    {
+        return $this->imagePath;
     }
 
     /**
@@ -113,4 +158,27 @@ class Product
     {
         return $this->description;
     }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
+    /**
+     * Set date created
+     *
+     * @param \DateTime $date
+     *
+     * @return Product
+     */
+    private function setCreatedAt(\DateTime $date)
+    {
+        $this->createdAt = $date;
+
+        return $this;
+    }
+
 }
