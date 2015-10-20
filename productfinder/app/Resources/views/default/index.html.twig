@@ -3,6 +3,13 @@
 {% block body %}
     <div id="wrapper">
         <div id="container">
+            {%  if userName == true %}
+                {{ userName }} <span id="logout">[<a href="logout">logout</a>]</span>
+            {%  else %}
+                <a href="login">Log In</a>
+            {%  endif %}
+
+
             <div id="welcome">
                 <h1><span>Welcome to Product Finder</span></h1>
             </div>
@@ -37,6 +44,7 @@
     #welcome h1 span { display: block; font-size: 75%; }
     #icon-status, #icon-book { float: left; height: 64px; margin-right: 1em; margin-top: -4px; width: 64px; }
     #icon-book { display: none; }
+    #logout {font-size: 0.50em;}
 
     @media (min-width: 768px) {
         #wrapper { width: 80%; margin: 2em auto; }
