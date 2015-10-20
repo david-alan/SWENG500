@@ -7,15 +7,13 @@
                 <h1><span>List of Results:</span></h1>
             </div>
             <div style="clear: both">
-            <div style="border-radius: 25px; border: 2px solid gray; margin: 20px; width: 220px;">
-                <h1>Some item here</h1>
-            </div>
-                <div style="border-radius: 25px; border: 2px solid gray; margin: 20px; width: 220px;">
-                    <h1>Some item here</h1>
+                {% for result in searchResults %}
+                <div class="itemBox">
+                    <img src="{{ result.getImagePath }}" style="width: 100px; height: 100px;">
+                    <br /><h2>{{ result.getPrice() }}</h2>
+                    {{ result.getDescription() }}
                 </div>
-                <div style="border-radius: 25px; border: 2px solid gray; margin: 20px; width: 220px;">
-                    <h1>Some item here</h1>
-                </div>
+                {% endfor %}
             </div>
 
             <br><br><hr><br>
@@ -44,6 +42,7 @@
         a { color: #0000F0; }
         a:hover { text-decoration: none; }
         code { background: #F5F5F5; max-width: 100px; padding: 2px 6px; word-wrap: break-word; }
+        .itemBox { border-radius: 25px; border: 2px solid gray; margin: 20px; width: 220px; padding: 10px;}
         #wrapper { background: #FFF; margin: 1em auto; max-width: 800px; width: 95%; }
         #container { padding: 2em; }
         #welcome, #status { margin-bottom: 2em; }
