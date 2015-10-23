@@ -81,7 +81,6 @@ class DefaultController extends Controller
 
             $queueValue = $searchTerm . ':' . $city . ':' . time();
             //http://stackoverflow.com/questions/14699873/how-to-reset-user-for-rabbitmq-management
-
             $exchangeName = 'products';
 
             //TODO: get username, port, pass from config file
@@ -101,6 +100,7 @@ class DefaultController extends Controller
 
             return $this->render('default/searchResults.html.twig', array(
                 'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
+                'searchResults' => ''
             ));
         }
 
