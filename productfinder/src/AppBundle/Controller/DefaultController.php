@@ -84,7 +84,8 @@ class DefaultController extends Controller
 
             $exchangeName = 'products';
 
-            $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
+            //TODO: get username, port, pass from config file
+            $connection = new AMQPStreamConnection('localhost', 5672, 'queue_user', 'BVfDqRGK9Y3G');
             $channel = $connection->channel();
             $channel->exchange_declare($exchangeName, 'fanout', false, false, false);
 
