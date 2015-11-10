@@ -2,12 +2,17 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
+ *
+ * TODO: inject doctrine entitymanager into constructor
+ * rather than extending Controller - quick hack to get
+ * access to doctrine
  */
-class User
+class User extends Controller
 {
     /**
      * @ORM\Column(type="integer")
@@ -100,14 +105,22 @@ class User
      */
     public function verifyPassword($plainTextPassword)
     {
-        $user = $this->getDoctrine()
-            ->getRepository('AppBundle:User')
-            ->findByUsername($this->getUserName());
+        var_dump($this->getEmail());
+$user = $this->getDoctrine()
+    ->getRepository('AppBundle:User')
+    ->findOneByEmail($this->getEmail());
+        die('x');
 
+        $user = $this->getDoctrine()
+            ->getRepository('AppBundle:User');
+            //->findByEmail($this->getEmail());
+        die('here');
         if (!$user) {
             return false;
         }
-
-        return password_verify($plainTextPassword, $user->getHashedPassword());
+var_dump($plainTextPassword);
+        var_dump($user->password);
+        die();
+        return ($plainTextPassword == $user->password);
     }
 }

@@ -59,10 +59,15 @@ class DefaultController extends Controller
 
         $client = new Client("product_realm");
         $client->addTransportProvider(new PawlTransportProvider("ws://127.0.0.1:8080/"));
+        $json = '{ "keyword" : "nintendo", "results": [ { "name": "Pokemon Omega Ruby (Nintendo 3DS)", "price": "28.99", "rating": "4.836", "image": "http://i.walmartimages.com/i/p/00/04/54/96/74/0004549674292_100X100.jpg", "websiteURL": "http://c.affil.walmart.com/t/api02?l=http%3A%2F%2Fwww.walmart.com%2Fip%2FPokemon-Omega-Ruby-Nintendo-3DS%2F37202055%3Faffp1%3DII40IhbphbkRO8fVRK1nX1fG6JoYNA4gn58AWmWaG-E%26affilsrc%3Dapi%26veh%3Daff%26wmlspartner%3Dreadonlyapi", "vendor": "Walmart", "description": "Pokemon Omega Ruby and Alpha Sapphire will take players on a journey like no other as they collect, battle, and trade Pokemon while trying to stop a shadowy group with plans to alter the Hoenn region forever." }, { "name": "Nintendo Wii U Super Mario 3D World Deluxe Set Console", "price": "276.97", "rating": "4.712", "image": "http://i.walmartimages.com/i/p/00/04/54/96/88/0004549688162_100X100.jpg", "websiteURL": "http://c.affil.walmart.com/t/api02?l=http%3A%2F%2Fwww.walmart.com%2Fip%2FNintendo-Wii-U-Super-Mario-3D-World-Deluxe-Set-Console%2F39404094%3Faffp1%3DII40IhbphbkRO8fVRK1nX1fG6JoYNA4gn58AWmWaG-E%26affilsrc%3Dapi%26veh%3Daff%26wmlspartner%3Dreadonlyapi", "vendor": "Walmart", "description": "&lt;b&gt;Nintendo Wii U Super Mario 3D World Deluxe Set Console Includes:&lt;/b&gt;&lt;ul&gt;&lt;li&gt;Black Nintendo Wii U Super Mario 3D World Deluxe Set Console&lt;/li&gt;&lt;li&gt;Super Mario 3D World Game&lt;/li&gt;&lt;li&gt;Nintendo Land Game&lt;/li&gt;&lt;li&gt;Wii U deluxe set AC Adapter&lt;/li&gt;&lt;li&gt;Wii U GamePad AC Adapter&lt;/li&gt;&lt;li&gt;High Speed HDMI Cable&lt;/li&gt;&lt;li&gt;Sensor Bar&lt;/li&gt;&lt;li&gt;Wii U GamePad Cradle&lt;/li&gt;&lt;li&gt;Wii U GamePad Stand Support&lt;/li&gt;&lt;li&gt;Wii U deluxe set console stand&lt;/li&gt;&lt;/ul&gt;" } ] }';
+        //echo $json;die();
 
-        $client->on('open', function (ClientSession $session) use ($json) {
+        $jsonObject = json_decode($json);
+        $tube = $jsonObject->{'keyword'};
+
+        $client->on('open', function (ClientSession $session) use ($json, $tube) {
             // publish an event
-            $session->publish('product', [$json], [], ["acknowledge" => true])->then(
+            $session->publish($tube, [$json], [], ["acknowledge" => true])->then(
                 function () {
                     echo "Publish Acknowledged!\n";
                     die(); //??? need to die out to keep it from going forever?
@@ -99,13 +104,14 @@ class DefaultController extends Controller
             ->getRepository('AppBundle:Product');
         $product = $repository->findByName($searchTerm);
 
-        var_dump($product);
+//        var_dump($product);
 
         if($product != null) //cache hit - return results from mysql table
         {
             return $this->render('default/searchResults.html.twig', array(
                 'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
                 'searchResults' => $product,
+                'searchTerm' => $searchTerm
             ));
         } else { //cache miss - invoke scrapers
             // put it in the queue
@@ -126,13 +132,14 @@ class DefaultController extends Controller
             $msg = new AMQPMessage($queueValue);
             $channel->basic_publish($msg, $exchangeName, $queueName);
 
-            echo " [x] placed in 'products' queue:  $queueValue\n";
+            echo " [x] placed in '$searchTerm' queue:  $queueValue\n";
             $channel->close();
             $connection->close();
 
             return $this->render('default/searchResults.html.twig', array(
                 'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
-                'searchResults' => ''
+                'searchResults' => '',
+                'searchTerm' => $searchTerm
             ));
         }
 
@@ -170,9 +177,14 @@ class DefaultController extends Controller
             try {
                 $repository = $this->getDoctrine()->getRepository(User::class);
                 $userSearch = $repository->findOneByEmail($user->getEmail());
+//check password is valid
 
-                $session->set('userName',$userSearch->getEmail());
-                return $this->redirectToRoute('homePage');
+                if($user->verifyPassword($request->request->get('login[password]'))){
+                    $session->set('userName',$userSearch->getEmail());
+                    return $this->redirectToRoute('homePage');
+                } else {
+                    throw new \Exception('username and password do not match');
+                }
             } catch (\Exception $e) {
                 //TODO: add flashbag error for db errors
                 return $this->redirectToRoute('loginForm');
@@ -185,7 +197,7 @@ class DefaultController extends Controller
                 $em->persist($user);
                 $em->flush();
             } catch (\Exception $e) {
-                //TODO: add flashbag error for duplicate username
+//TODO: add flashbag error for duplicate username
                 return $this->redirectToRoute('loginForm');
             }
 
@@ -200,30 +212,4 @@ class DefaultController extends Controller
         ));
     }
 
-    /**
-     * @Route("/api/findProduct")
-     */
-    public function apiNumberAction()
-    {
-        $data = array('1' =>
-                        array('name' => 'THIS HAS BEEN CHANGED Some Name goes here',
-                            'price' => '$123.45',
-                            'decsription' => 'Lorem ipsum...'),
-            '2' =>
-                        array('name' => 'Second product name',
-                            'price' => '$555',
-                            'decsription' => 'Lorem ipsum...'),
-
-            '3' =>
-                    array('name' => 'The third product name',
-                        'price' => '$25',
-                        'decsription' => 'Lorem ipsum...'),
-                        );
-
-        return new Response(
-            json_encode($data),
-            200,
-            array('Content-Type' => 'application/json')
-        );
-    }
 }
