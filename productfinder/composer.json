@@ -9,6 +9,7 @@
         }
     },
     "require": {
+        "cboden/ratchet": "0.3.*",
         "php": ">=5.3.9",
         "symfony/symfony": "2.7.*",
         "doctrine/orm": "^2.4.8",
@@ -19,7 +20,9 @@
         "sensio/distribution-bundle": "~4.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
-		"videlalvaro/php-amqplib": "2.5.*"
+		"videlalvaro/php-amqplib": "2.5.*",
+        "cboden/ratchet": "0.3.*",
+        "voryx/thruway": "0.3.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

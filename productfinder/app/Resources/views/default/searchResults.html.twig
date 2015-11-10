@@ -6,7 +6,7 @@
             <div id="welcome">
                 <h1><span>List of Results:</span></h1>
             </div>
-            <div style="clear: both">
+            <div style="clear: both" id="resultsSet">
                 {% for result in searchResults %}
                 <div class="itemBox">
                     <img src="{{ result.getImagePath }}" style="width: 100px; height: 100px;">
@@ -30,6 +30,42 @@
 
         </div>
     </div>
+{% endblock %}
+
+{%  block javascripts %}
+
+    {% javascripts '@AppBundle/Resources/public/js/*' %}
+        <script src="{{  asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+    var connection = new autobahn.Connection({
+        url: 'ws://productfinder:8080/',
+        realm: 'product_realm'
+    });
+
+    connection.onopen = function (session) {
+
+        // 1) subscribe to a topic
+        function onevent(args) {
+
+            var obj = $.parseJSON(args[0]);
+            obj.foreach(function(entry) {
+              console.log(entry);
+              }
+            );
+            console.log(obj.results);
+            var divItem ="<div style=\"border: 3px solid red;\">abc</div>";
+            $("#resultsSet").html(divItem);
+            //console.log(JSON.stringify(args[0]));
+           // console.log(JSON.stringify(args));
+           // console.log("Event:", args[0]);
+        }
+        session.subscribe('{{ searchTerm|trim }}', onevent);
+    };
+
+    connection.open();
+    </script>
 {% endblock %}
 
 {% block stylesheets %}

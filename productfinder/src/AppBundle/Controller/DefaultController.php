@@ -16,6 +16,10 @@ use AppBundle\Form\User\CreateAccountType;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
+use Thruway\ClientSession;
+use Thruway\Peer\Client;
+use Thruway\Transport\PawlTransportProvider;
+
 class DefaultController extends Controller
 {
     /**
@@ -25,7 +29,7 @@ class DefaultController extends Controller
     {
         $session = $request->getSession();
         $session->start();
-        var_dump($session->get('userName'));
+        //var_dump($session->get('userName'));
 
         $userName = $session->get('userName');
         return $this->render('default/index.html.twig', array(
@@ -45,11 +49,39 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/broadcast", name="broadcast")
+     *
+     * Distribute the JSON sent as a POST request to subscribers
+     */
+    public function broadcastToClients(Request $request)
+    {
+        $json = $request->query->get('json'); // GET param
+
+        $client = new Client("product_realm");
+        $client->addTransportProvider(new PawlTransportProvider("ws://127.0.0.1:8080/"));
+
+        $client->on('open', function (ClientSession $session) use ($json) {
+            // publish an event
+            $session->publish('product', [$json], [], ["acknowledge" => true])->then(
+                function () {
+                    echo "Publish Acknowledged!\n";
+                    die(); //??? need to die out to keep it from going forever?
+                },
+                function ($error) {
+                    // publish failed
+                    echo "Publish Error {$error}\n";
+                }
+            );
+        });
+
+        $client->start();
+    }
+
+    /**
      * @Route("/findProduct", name="searchResults")
      */
     public function searchAction(Request $request)
     {
-        $city = '';
         if(!$this->container->get('session')->isStarted()){
             $session = new Session();
         } else {
@@ -79,22 +111,22 @@ class DefaultController extends Controller
             // put it in the queue
             $queueName ='searchTerms';
 
-            $queueValue = $searchTerm . ':' . $city . ':' . time();
-            //http://stackoverflow.com/questions/14699873/how-to-reset-user-for-rabbitmq-management
-            $exchangeName = 'products';
+            $queueValue = $searchTerm . ':' . time();
+
+            $exchangeName = 'products.crawlers'; //the exchange for the crawlers from which the crawlers read
 
             //TODO: get username, port, pass from config file
             $connection = new AMQPStreamConnection('localhost', 5672, 'queue_user', 'BVfDqRGK9Y3G');
+//sudo rabbitmqctl set_user_permissions queue_user ".*" ".*" ".*"
             $channel = $connection->channel();
             $channel->exchange_declare($exchangeName, 'fanout', false, false, false);
 
             //$channel->queue_declare($queueName, false, false, false, false);
 
-            $msg = new AMQPMessage($queueValue); //time tells us when to prune/expire old entries from cache
+            $msg = new AMQPMessage($queueValue);
             $channel->basic_publish($msg, $exchangeName, $queueName);
 
-            echo " [x] Sent $queueValue\n";
-
+            echo " [x] placed in 'products' queue:  $queueValue\n";
             $channel->close();
             $connection->close();
 
