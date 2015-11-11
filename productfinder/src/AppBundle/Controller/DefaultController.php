@@ -63,7 +63,7 @@ class DefaultController extends Controller
         //echo $json;die();
 
         $jsonObject = json_decode($json);
-        $tube = $jsonObject->{'keyword'};
+        $tube = $jsonObject->{'searchTerm'};
 
         $client->on('open', function (ClientSession $session) use ($json, $tube) {
             // publish an event
