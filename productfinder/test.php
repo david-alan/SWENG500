@@ -44,7 +44,7 @@ $client->start();
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 $queueName = 'products';
-$connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
+$connection = new AMQPStreamConnection('localhost', 5672, 'queue_user', 'BVfDqRGK9Y3G');
 $channel = $connection->channel();
 
 $channel->queue_declare($queueName, false, true, false, false);
