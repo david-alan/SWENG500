@@ -95,16 +95,12 @@ class DefaultController extends Controller
 
         $session->start();//maybe use session->getSession() or something?
         $sessionId = $session->getId();
-		//var_dump($request->request->get('searchQuery'));
         $searchTerm = $request->request->get('searchQuery');
-        //var_dump($sessionId);
 
         //check to see if keyword exists in product table
         $repository = $this->getDoctrine()
             ->getRepository('AppBundle:Product');
         $product = $repository->findByName($searchTerm);
-
-//        var_dump($product);
 
         if($product != null) //cache hit - return results from mysql table
         {
@@ -115,22 +111,22 @@ class DefaultController extends Controller
             ));
         } else { //cache miss - invoke scrapers
             // put it in the queue
-            $queueName ='searchTerms';
 
-            $queueValue = $searchTerm . ':' . time();
-
-            $exchangeName = 'products.crawlers'; //the exchange for the crawlers from which the crawlers read
+            //sudo rabbitmqctl set_user_permissions queue_user ".*" ".*" ".*"
+            $queueName ='products';
+            $queueValue = $searchTerm;
 
             //TODO: get username, port, pass from config file
             $connection = new AMQPStreamConnection('localhost', 5672, 'queue_user', 'BVfDqRGK9Y3G');
-//sudo rabbitmqctl set_user_permissions queue_user ".*" ".*" ".*"
+
             $channel = $connection->channel();
-            $channel->exchange_declare($exchangeName, 'fanout', false, false, false);
+            $channel->queue_declare($queueName, false, true, false, false);
 
-            //$channel->queue_declare($queueName, false, false, false, false);
+            $msg = new AMQPMessage($queueValue,
+                array('delivery_mode' => 2) # make message persistent (flush to disk)
+            );
 
-            $msg = new AMQPMessage($queueValue);
-            $channel->basic_publish($msg, $exchangeName, $queueName);
+            $channel->basic_publish($msg, '', $queueName);
 
             echo " [x] placed in '$searchTerm' queue:  $queueValue\n";
             $channel->close();
@@ -142,10 +138,6 @@ class DefaultController extends Controller
                 'searchTerm' => $searchTerm
             ));
         }
-
-        return $this->render('default/searchResults.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
-        ));
     }
 
     /**
