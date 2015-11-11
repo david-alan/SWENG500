@@ -43,10 +43,11 @@ $client->start();
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
+$queueName = 'products';
 $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
 $channel = $connection->channel();
 
-$channel->queue_declare('task_queue', false, true, false, false);
+$channel->queue_declare($queueName, false, true, false, false);
 
 echo ' [*] Waiting for messages. To exit press CTRL+C', "\n";
 
@@ -58,7 +59,7 @@ $callback = function($msg){
 };
 
 $channel->basic_qos(null, 1, null);
-$channel->basic_consume('task_queue', '', false, false, false, false, $callback);
+$channel->basic_consume($queueName, '', false, false, false, false, $callback);
 
 while(count($channel->callbacks)) {
     $channel->wait();
