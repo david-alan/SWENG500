@@ -3,13 +3,13 @@
 {% block body %}
     <div id="wrapper">
         <div id="container">
-            <div id="welcome">
+            <div id="welcome" >
                 <h1><span>List of Results:</span></h1>
             </div>
-            <div style="clear: both" id="resultsSet">
+            <div style="clear: both" id="resultsSet" >
                 {% for result in searchResults %}
                 <div class="itemBox">
-                    <img src="{{ result.getImagePath }}" style="width: 100px; height: 100px;">
+                    <img src="{{ result.getImagePath }}" class="result-image">
                     <br /><h2>{{ result.getPrice() }}</h2>
                     {{ result.getDescription() }}
                 </div>
@@ -62,9 +62,58 @@
            // console.log("Event:", args[0]);
         }
         session.subscribe('{{ searchTerm|trim }}', onevent);
-    };
+    }
 
     connection.open();
+
+//TODO: move this into the onevent() codeblock above
+    var strReturnedFromLeonard = '{"searchTerm":"nintendo","results":[{"name":"Nintendo 2DS Handheld Game Console - Crimson Red","price":"99.0","rating":"4.313","image":"http://i.walmartimages.com/i/p/00/04/54/96/78/0004549678144_100X100.jpg","websiteURL":"http://c.affil.walmart.com/t/api02?l=http%3A%2F%2Fwww.walmart.com%2Fip%2FNintendo-2DS-with-Mario-Kart-7-Game-Crimson-Red%2F39797379%3Faffp1%3DII40IhbphbkRO8fVRK1nX1fG6JoYNA4gn58AWmWaG-E%26affilsrc%3Dapi%26veh%3Daff%26wmlspartner%3Dreadonlyapi","vendor":"Walmart","description":"Experience the best of both worlds with the Nintendo 2DS with Mario Kart 7 Game. This product provides you with the latest gaming technology that brings together the power of two systems into a single, affordable package. Play all of the games you like from both the Nintendo DS and Nintendo 3DS in 2D. This stylish crimson red 2DS console lets you connect with friends, other players and even wireless hotspot using the wireless StreetPass and SpotPass communication modes. Unlock exclusive content for your games and download other forms of entertainment from games, to photos and beyond. This Nintendo 2DS game is extremely portable, so you can experience the ultimate in 2D gaming wherever you go."},{"name":"Nintendo 3DS XL, Assorted Colors","price":"159.0","rating":"4.707","image":"http://i.walmartimages.com/i/p/00/04/54/96/78/0004549678081_Color_Black_SW_100X100.jpg","websiteURL":"http://c.affil.walmart.com/t/api02?l=http%3A%2F%2Fwww.walmart.com%2Fip%2FNintendo-3DS-XL-Assorted-Colors%2F26833356%3Faffp1%3DII40IhbphbkRO8fVRK1nX1fG6JoYNA4gn58AWmWaG-E%26affilsrc%3Dapi%26veh%3Daff%26wmlspartner%3Dreadonlyapi","vendor":"Walmart","description":"The Nintendo 3DS XL system combines next-generation portable gaming with eye-popping 3D visuals without the need for special glasses, giving you a new dimension in entertainment. Take 3D photos or connect to friends and use wireless hot spots with the wireless StreetPass and SpotPass communication modes. From games to photos and beyond, the Nintendo 3DS XL system offers quality 3D entertainment. It comes bundled with a 4GB SD card, making it suitable for downloading content from the Nintendo eShop. The Nintendo 3DS XL console can also play all of the original Nintendo DS games. Nintendo DS games will not appear in 3D."},{"name":"Nintendo 2DS - Handheld game console - electric blue","price":"99.0","rating":"4.435","image":"http://i.walmartimages.com/i/p/00/04/54/96/78/0004549678143_100X100.jpg","websiteURL":"http://c.affil.walmart.com/t/api02?l=http%3A%2F%2Fwww.walmart.com%2Fip%2FNintendo-2DS-with-Mario-Kart-7-Game-Electric-Blue%2F39797378%3Faffp1%3DII40IhbphbkRO8fVRK1nX1fG6JoYNA4gn58AWmWaG-E%26affilsrc%3Dapi%26veh%3Daff%26wmlspartner%3Dreadonlyapi","vendor":"Walmart","description":"Experience the best of both worlds with the Nintendo 2DS with Mario Kart 7 Game. This product provides you with the latest gaming technology that brings together the power of two systems into a single, affordable package. Play all of the games you like from both the Nintendo DS and Nintendo 3DS in 2D. This stylish electric blue Nintendo 2DS console lets you connect with friends, other players and even wireless hotspot using the wireless StreetPass and SpotPass communication modes. Unlock exclusive content for your games and download other forms of entertainment from games, to photos and beyond. This 2DS console is extremely portable, so you can experience the ultimate in gaming wherever you go."},{"name":"New Nintendo 3DS XL Handheld, Black","price":"196.19","rating":"3.846","image":"http://i.walmartimages.com/i/p/00/04/54/96/78/0004549678151_100X100.jpg","websiteURL":"http://c.affil.walmart.com/t/api02?l=http%3A%2F%2Fwww.walmart.com%2Fip%2FNew-Nintendo-3DS-XL-Handheld-Black%2F43091538%3Faffp1%3DII40IhbphbkRO8fVRK1nX1fG6JoYNA4gn58AWmWaG-E%26affilsrc%3Dapi%26veh%3Daff%26wmlspartner%3Dreadonlyapi","vendor":"Walmart","description":"This New Nintendo 3DS XL Handheld enhances your gaming experience with added amiibo support. Take 3D photos and have fun connecting with your friends. The Nintendo 3DS handheld combines next generation portable gaming with super stable 3D technology and added control features. It includes two screens: the bottom one makes use of a stylus that is stored in the unit and the top displays 3D visuals. It uses the same adapter as Nintendo DSi Nintendo 3DS and 2DS."},{"name":"Luigi\'s Mansion: Dark Moon (Nintendo 3DS)","price":"27.99","rating":"4.745","image":"http://i.walmartimages.com/i/p/00/04/54/96/74/0004549674215_100X100.jpg","websiteURL":"http://c.affil.walmart.com/t/api02?l=http%3A%2F%2Fwww.walmart.com%2Fip%2FLuigi-s-Mansion-Dark-Moon-Nintendo-3DS%2F23001144%3Faffp1%3DII40IhbphbkRO8fVRK1nX1fG6JoYNA4gn58AWmWaG-E%26affilsrc%3Dapi%26veh%3Daff%26wmlspartner%3Dreadonlyapi","vendor":"Walmart","description":"Explore haunted mansions with Luigi! Guide clumsy Luigi through massive ghost-infested mansions across the Evershade Valley, each with their own distinct features and challenges, on an action-packed hunt for the pieces of the Dark Moon. Armed with the ghost-sucking Poltergust 5000 and other new gadgets, you\'ll have to capture ghosts, solve puzzles, and battle monster-sized bosses. Can you and Luigi build up the courage to save the day? The pieces of the Dark Moon are scattered therein, so you\'ll need to explore every ghoul-infested nook and cranny of each haunted mansion. Hope you don\'t spook easily!"},{"name":"New Nintendo 3DS XL - Red","price":"194.89","rating":"3.0","image":"http://i.walmartimages.com/i/p/00/04/54/96/78/0004549678150_100X100.jpg","websiteURL":"http://c.affil.walmart.com/t/api02?l=http%3A%2F%2Fwww.walmart.com%2Fip%2FNew-Nintendo-3DS-XL-Handheld-Red%2F43091537%3Faffp1%3DII40IhbphbkRO8fVRK1nX1fG6JoYNA4gn58AWmWaG-E%26affilsrc%3Dapi%26veh%3Daff%26wmlspartner%3Dreadonlyapi","vendor":"Walmart","description":"This New Nintendo 3DS XL Handheld enhances your gaming experience with added amiibo support. Take 3D photos and have fun connecting with your friends. The Nintendo 3DS handheld combines next generation portable gaming with super stable 3D technology and added control features. It includes two screens: the bottom one makes use of a stylus that is stored in the unit and the top displays 3D visuals. It uses the same adapter as Nintendo DSi Nintendo 3DS and 2DS."},{"name":"Nintendo Wii Mini Red with Mario Kart","price":"99.0","rating":"4.332","image":"http://i.walmartimages.com/i/p/00/04/54/96/88/0004549688127_100X100.jpg","websiteURL":"http://c.affil.walmart.com/t/api02?l=http%3A%2F%2Fwww.walmart.com%2Fip%2FNintendo-Wii-Mini-Red-with-Mario-Kart%2F30913801%3Faffp1%3DII40IhbphbkRO8fVRK1nX1fG6JoYNA4gn58AWmWaG-E%26affilsrc%3Dapi%26veh%3Daff%26wmlspartner%3Dreadonlyapi","vendor":"Walmart","description":"Have hours of gaming fun with the Nintendo Wii Mini with Mario Kart. The new Wii mini offers up an unbelievable amount of single and multiplayer options. One of the bestselling games of all time, Mario Kart Wii, is included in the box. The red Nintendo Wii also includes a Wii Remote Plus and Nunchuk controller. The mini Nintendo Wii console does not connect to the Internet and does not offer online features in games."},{"name":"Legend Zelda Tri Force 3DS","price":"36.49","rating":null,"image":"http://i.walmartimages.com/i/p/00/04/54/96/74/0004549674334_100X100.jpg","websiteURL":"http://c.affil.walmart.com/t/api02?l=http%3A%2F%2Fwww.walmart.com%2Fip%2FThe-Legend-of-Zelda-Tri-Force-Heroes-Nintendo-3DS%2F45736671%3Faffp1%3DII40IhbphbkRO8fVRK1nX1fG6JoYNA4gn58AWmWaG-E%26affilsrc%3Dapi%26veh%3Daff%26wmlspartner%3Dreadonlyapi","vendor":"Walmart","description":"In the visual style of the critically-acclaimed The Legend of Zelda: A Link Between Worlds game comes a new adventure. In this journey, three players team up - each as Link - to cooperatively make their way through inventive dungeons and battle bosses. Use the new Totem mechanic to stack three Links on top of each other to reach higher grounds and solve puzzles. Collect loot to create wearable outfits, each with a different boost or ability."},{"name":"Pokmon Alpha Sapphire - Nintendo 3DS","price":"36.99","rating":"4.691","image":"http://i.walmartimages.com/i/p/00/04/54/96/74/0004549674294_100X100.jpg","websiteURL":"http://c.affil.walmart.com/t/api02?l=http%3A%2F%2Fwww.walmart.com%2Fip%2FPokemon-Alpha-Sapphire-Nintendo-3DS%2F37202057%3Faffp1%3DII40IhbphbkRO8fVRK1nX1fG6JoYNA4gn58AWmWaG-E%26affilsrc%3Dapi%26veh%3Daff%26wmlspartner%3Dreadonlyapi","vendor":"Walmart","description":"Pokemon Omega Ruby and Alpha Sapphire will take players on a journey like no other as they collect, battle, and trade Pokemon while trying to stop a shadowy group with plans to alter the Hoenn region forever."},{"name":"Super Mario Maker (Wii U)","price":"55.98","rating":"5.0","image":"http://i.walmartimages.com/i/p/00/04/54/96/90/0004549690375_100X100.jpg","websiteURL":"http://c.affil.walmart.com/t/api02?l=http%3A%2F%2Fwww.walmart.com%2Fip%2FSuper-Mario-Maker-Wii-U%2F45725079%3Faffp1%3DII40IhbphbkRO8fVRK1nX1fG6JoYNA4gn58AWmWaG-E%26affilsrc%3Dapi%26veh%3Daff%26wmlspartner%3Dreadonlyapi","vendor":"Walmart","description":"The ultimate evolution of Super Mario Bros. is here! The Mario experience of your dreams has arrived and is bursting with creativity... including yours! Play a near-limitless number of intensely creative Super Mario levels from players around the world. It\'s easy enough to create your own levels with the Wii U GamePad controller that it may feel like you\'re simply sketching out your ideas on paper, but you can now bring enemies and objects into a playable course in ways you could only dream of before. What was impossible in traditional Mario games is now impossibly fun, so let your imagination run wild!"},{"name":"1 vs. 100 - Nintendo DS","price":"14.99","rating":"null","image":"http://img.bbystatic.com/BestBuy_US/images/products/8998/8998757_sc.jpg","websiteURL":"http://www.bestbuy.com/site/1-vs-100-nintendo-ds/8998757.p?id=1218007385090&skuId=8998757","vendor":"Best Buy","description":"Prove yourself against 100 clever opponents"},{"name":"1,001 Touch Games - Nintendo DS","price":"19.99","rating":"4.5","image":"http://img.bbystatic.com/BestBuy_US/images/products/3455/3455458_sc.jpg","websiteURL":"http://www.bestbuy.com/site/1001-touch-games-nintendo-ds/3455458.p?id=1218403504187&skuId=3455458","vendor":"Best Buy","description":"Discover 1,001 new ways to have fun"},{"name":"10 Minute Solution - Nintendo Wii","price":"19.99","rating":"3.0","image":"http://img.bbystatic.com/BestBuy_US/images/products/9913/9913291.jpg","websiteURL":"http://www.bestbuy.com/site/10-minute-solution-nintendo-wii/9913291.p?id=1218194156063&skuId=9913291","vendor":"Best Buy","description":"Fit fitness into your hectic schedule"},{"name":"101-in-1 Sports Megamix - Nintendo DS","price":"14.99","rating":"null","image":"http://img.bbystatic.com/BestBuy_US/images/products/1264/1264163.jpg","websiteURL":"http://www.bestbuy.com/site/101-in-1-sports-megamix-nintendo-ds/1264163.p?id=1218245467418&skuId=1264163","vendor":"Best Buy","description":"Don\'t settle for less &#8212; play more sports than ever"},{"name":"18 Classic Card Games - Nintendo DS","price":"14.99","rating":"4.0","image":"http://img.bbystatic.com/BestBuy_US/images/products/1610/1610584_sc.jpg","websiteURL":"http://www.bestbuy.com/site/18-classic-card-games-nintendo-ds/1610584.p?id=1218307693304&skuId=1610584","vendor":"Best Buy","description":"The fun of cards meets the Nintendo DS"},{"name":"50 Classic Games - Nintendo DS","price":"14.99","rating":"4.0","image":"http://img.bbystatic.com/BestBuy_US/images/products/9468/9468701_105x210_sc.jpg","websiteURL":"http://www.bestbuy.com/site/50-classic-games-nintendo-ds/9468701.p?id=1218109898184&skuId=9468701","vendor":"Best Buy","description":"Would you like to play a game?"},{"name":"50 Classic Games 3D - Nintendo 3DS","price":"19.99","rating":"4.0","image":"http://img.bbystatic.com/BestBuy_US/images/products/7130/7130056_sc.jpg","websiteURL":"http://www.bestbuy.com/site/50-classic-games-3d-nintendo-3ds/7130056.p?id=1218831022937&skuId=7130056","vendor":"Best Buy","description":"Place your odds on fun in a collection of casino games, sports contests, puzzles and more"},{"name":"50 More Classic Games - Nintendo DS","price":"14.99","rating":"null","image":"http://img.bbystatic.com/BestBuy_US/images/products/2762/2762361_sc.jpg","websiteURL":"http://www.bestbuy.com/site/50-more-classic-games-nintendo-ds/2762361.p?id=1218348992655&skuId=2762361","vendor":"Best Buy","description":"Enjoy hours of fun with all your favorite classic games"},{"name":"8Bitdo - Bluetooth Controller - Gray/Black/Red","price":"39.99","rating":"null","image":"http://img.bbystatic.com/BestBuy_US/images/products/4670/4670100_sc.jpg","websiteURL":"http://www.bestbuy.com/site/8bitdo-bluetooth-controller-gray-black-red/4670100.p?id=1219794344496&skuId=4670100","vendor":"Best Buy","description":"8BITDO Bluetooth Controller: Compatible with most Android, Apple and Windows devices; Bluetooth connectivity; retro Nintendo style; Ring Stander device stand"},{"name":"8Bitdo - Bluetooth Controller - Gray/Purple/Black","price":"34.99","rating":"null","image":"http://img.bbystatic.com/BestBuy_US/images/products/4670/4670101_sc.jpg","websiteURL":"http://www.bestbuy.com/site/8bitdo-bluetooth-controller-gray-purple-black/4670101.p?id=1219794340071&skuId=4670101","vendor":"Best Buy","description":"8BITDO Bluetooth Controller: Designed for most Android, Apple and Windows devices; Bluetooth connectivity; Super Nintendo style; Ring Stander device stand"},{"name":"Nintendo New 3DS XL Black","price":"$196.19","rating":"4.4 out of 5 stars","image":"http://ecx.images-amazon.com/images/I/51JFoR4kQ5L._AA160_.jpg","websiteURL":"http://www.amazon.com/Nintendo-New-3DS-XL-Black/dp/B00S1LRX3W/ref=sr_1_1?ie=UTF8&qid=1447300236&sr=8-1&keywords=nintendo","vendor":"Amazon","description":""},{"name":"Nintendo DS Lite Cobalt / Black","price":"$23.80","rating":"4.4 out of 5 stars","image":"http://ecx.images-amazon.com/images/I/415YsYGUm3L._AA160_.jpg","websiteURL":"http://www.amazon.com/Nintendo-DS-Lite-Cobalt-Black/dp/B001290A3U/ref=sr_1_3?ie=UTF8&qid=1447300236&sr=8-3&keywords=nintendo","vendor":"Amazon","description":""},{"name":"Nintendo Wii U Deluxe Set: Super Mario 3D World and Nintendo Land Bundle - Black 32 GB","price":"$342.90","rating":"4.6 out of 5 stars","image":"http://ecx.images-amazon.com/images/I/514k8rSpymL._AA160_.jpg","websiteURL":"http://www.amazon.com/Nintendo-Wii-Deluxe-Set-Bundle-u/dp/B00MVUKM0A/ref=sr_1_4?ie=UTF8&qid=1447300236&sr=8-4&keywords=nintendo","vendor":"Amazon","description":""},{"name":"Nintendo New 3DS XL Red","price":"$194.89","rating":"4.4 out of 5 stars","image":"http://ecx.images-amazon.com/images/I/51CCabyGiQL._AA160_.jpg","websiteURL":"http://www.amazon.com/Nintendo-New-3DS-XL-Red/dp/B00S1LRUVW/ref=sr_1_5?ie=UTF8&qid=1447300236&sr=8-5&keywords=nintendo","vendor":"Amazon","description":""},{"name":"Nintendo Entertainment System Mouse Pad, Mousepad (10.2 x 8.3 x 0.12 inches)","price":"$11.99","rating":"","image":"http://ecx.images-amazon.com/images/I/51kAFhdt+9L._AA160_.jpg","websiteURL":"http://www.amazon.com/Nintendo-Entertainment-Mouse-Pad-Mousepad/dp/B00WR388H0/ref=sr_1_6?ie=UTF8&qid=1447300236&sr=8-6&keywords=nintendo","vendor":"Amazon","description":""}]}';
+    var json = JSON.stringify(eval("(" + strReturnedFromLeonard + ")"));
+    var parser = jQuery.parseJSON( json );
+
+    for(var i = 0; i < parser.results.length; i++)
+    {
+        var uri = parser.results[i].websiteURL;
+
+      //  console.log(parser.results[i]);
+        var div = '';
+        div += '<div class="itemBox">';
+        div += '<h2>' +  parser.results[i].name + '</h2>';
+        div += '<a href="'+uri+'" target="_blank"><img src="' + parser.results[i].image + '" class="result-image"></a> <br/>';
+        div += '<span class="price">' + formatPrice(parser.results[i].price) + '</span><br/>';
+        div += formatRating(parser.results[i].rating) + '<br/>';
+        div += '<a href="'+ uri + '">' +parser.results[i].vendor + '</a><br/>';
+        div += parser.results[i].description + '<br/>';
+        div += "</div>";
+        $("#resultsSet").append(div);
+    }
+
+    //format prices
+    function formatRating(rating)
+    {
+        console.log(rating);
+        if(!rating || rating === "null") { return '<i>no rating found</i>'; }
+
+        rating =  rating.replace(/[^\d.]/g,'');
+        rating = parseFloat(rating);
+        rating = rating.toFixed(0);
+        console.log( 'Rating: ' + rating + ' out of 5');
+        return 'Rating: ' + rating + ' out of 5';
+    }
+
+    function formatPrice(price)
+    {
+        if(!price || price === "null") { return '<i>no price found</i>'; }
+
+        price = price.replace(/[^\d.]/g,'');
+        price = parseFloat(price);
+        price = price.toFixed(2);
+
+        price = '$' + price;
+
+        return price;
+    }
+
     </script>
 {% endblock %}
 
@@ -78,13 +127,16 @@
         a { color: #0000F0; }
         a:hover { text-decoration: none; }
         code { background: #F5F5F5; max-width: 100px; padding: 2px 6px; word-wrap: break-word; }
-        .itemBox { border-radius: 25px; border: 2px solid gray; margin: 20px; width: 220px; padding: 10px;}
+
         #wrapper { background: #FFF; margin: 1em auto; max-width: 800px; width: 95%; }
         #container { padding: 2em; }
         #welcome, #status { margin-bottom: 2em; }
         #welcome h1 span { display: block; font-size: 75%; }
         #icon-status, #icon-book { float: left; height: 64px; margin-right: 1em; margin-top: -4px; width: 64px; }
         #icon-book { display: none; }
+
+        .result-image {width: 100px; height: 100px;}
+        .itemBox { border-radius: 25px; border: 2px solid gray; margin: 20px; width: 90%; padding: 10px;}
 
         @media (min-width: 768px) {
             #wrapper { width: 80%; margin: 2em auto; }
