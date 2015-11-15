@@ -55,7 +55,11 @@ class DefaultController extends Controller
      */
     public function broadcastToClients(Request $request)
     {
-        $json = $request->request->get('json'); // GET param
+        //log response
+        $file = './log_broadcasts.txt';
+        file_put_contents($file, $request->request->get('json'), FILE_APPEND);
+        
+        $json = $request->request->get('json'); // POST param
 
         $client = new Client("product_realm");
         $client->addTransportProvider(new PawlTransportProvider("ws://127.0.0.1:8080/"));
