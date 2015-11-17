@@ -49,6 +49,7 @@
         // 1) subscribe to a topic
         function onevent(args) {
 
+            console.log("event occured")
             var obj = $.parseJSON(args[0]);
             obj.foreach(function(entry) {
               console.log(entry);
@@ -62,7 +63,7 @@
            // console.log("Event:", args[0]);
         }
         session.subscribe('{{ searchTerm|trim }}', onevent);
-    }
+    };
 
     connection.open();
 
@@ -91,13 +92,12 @@
     //format prices
     function formatRating(rating)
     {
-        console.log(rating);
         if(!rating || rating === "null") { return '<i>no rating found</i>'; }
 
         rating =  rating.replace(/[^\d.]/g,'');
         rating = parseFloat(rating);
         rating = rating.toFixed(0);
-        console.log( 'Rating: ' + rating + ' out of 5');
+
         return 'Rating: ' + rating + ' out of 5';
     }
 
