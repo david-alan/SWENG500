@@ -37,10 +37,10 @@ $client->start();
  * */
 
 /*
- * Test the Message queue
-
+ * Test the receiving the Message queue
  */
 
+/*
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 $queueName = 'products';
@@ -67,3 +67,19 @@ while(count($channel->callbacks)) {
 
 $channel->close();
 $connection->close();
+
+*/
+
+/*
+ * Test sending on the message queue
+ */
+use PhpAmqpLib\Message\AMQPMessage;
+
+$data = "nintendo";
+$msg = new AMQPMessage($data,
+    array('delivery_mode' => 2) # make message persistent
+);
+
+$channel->basic_publish($msg, '', 'products');
+
+echo " [x] Sent ", $data, "\n";
