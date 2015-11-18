@@ -57,6 +57,7 @@ class DefaultController extends Controller
     {
         //$json = $request->request->get('json'); // POST param
         $json = $request->getContent(); //JSON sent as body of POST request
+        $this->addToCache($json);
 
         $client = new Client("product_realm");
         $client->addTransportProvider(new PawlTransportProvider("ws://127.0.0.1:8080/"));
@@ -201,6 +202,18 @@ class DefaultController extends Controller
             'loginForm' => $loginForm->createView(),
             'createAccountForm' => $createAccountForm->createView()
         ));
+    }
+
+    private function addToCache($json)
+    {
+        $jsonObject = json_decode($json);
+        $products = $jsonObject->{'results'};
+
+        $logger = $this->get('logger');
+        $logger->info('===Testing logger===');
+        $logger->info($products);
+
+
     }
 
 }
