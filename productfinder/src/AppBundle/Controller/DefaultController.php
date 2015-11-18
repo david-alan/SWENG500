@@ -214,7 +214,7 @@ class DefaultController extends Controller
             $product->setSearchTerm($searchTerm);
             $product->setName($products[$i]->name);
             $product->setImage($products[$i]->image);
-            $product->setPrice(preg_replace("/[^0-9,.]/", "",$products[$i]->price);
+            $product->setPrice(preg_replace("/[^0-9,.]/", "",$products[$i]->price));
             $product->setRating($products[$i]->rating);
             $product->setDescription($products[$i]->description);
             $product->setVendor($products[$i]->vendor);
