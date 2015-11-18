@@ -10,10 +10,17 @@
             <div style="clear: both" id="resultsSet" >
                 {% for result in searchResults %}
                 <div class="itemBox">
-                    <h2>{{ result.getName() }}</h2>;
+                    <h2>{{ result.getName() }}</h2>
                     <a href="{{ result.getWebsiteURL() }}" target="_blank"><img src="{{ result.getImage() }}" class="result-image"></a><br/>
                     <span class="price">${{ result.getPrice() }}</span><br/>
-                    {{ result.getRating() }} <br/>
+
+                    {% if result.getRating() != 'null' %}
+                     {{ result.getRating()|number_format }} out of 5
+                    {% else %}
+                        <i>no rating available</i>
+                    {% endif %}
+                    
+                    <br/>
                     <a href="{{ result.getWebsiteURL() }}">{{ result.getVendor() }}</a><br/>
                     {{ result.getDescription() }} <br/>
                 </div>
