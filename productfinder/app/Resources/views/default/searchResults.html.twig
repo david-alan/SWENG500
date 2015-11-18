@@ -14,15 +14,21 @@
                     <a href="{{ result.getWebsiteURL() }}" target="_blank"><img src="{{ result.getImage() }}" class="result-image"></a><br/>
                     <span class="price">${{ result.getPrice() }}</span><br/>
 
-                    {% if result.getRating() != 'null' %}
-                     {{ result.getRating()|number_format }} out of 5
+                    {% if result.getRating() != 'null' and
+                          result.getRating() != '0' and
+                          result.getRating() != ''
+                    %}
+                        {{ result.getRating()|number_format }} out of 5
                     {% else %}
                         <i>no rating available</i>
                     {% endif %}
-                    
                     <br/>
+
                     <a href="{{ result.getWebsiteURL() }}">{{ result.getVendor() }}</a><br/>
-                    {{ result.getDescription() }} <br/>
+
+                    {% if result.getDescription() != 'null' %}
+                        {{ result.getDescription() }} <br/>
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
