@@ -99,7 +99,7 @@ class DefaultController extends Controller
         //check to see if keyword exists in product table
         $repository = $this->getDoctrine()
             ->getRepository('AppBundle:Product');
-        $product = $repository->findByName($searchTerm);
+        $product = $repository->findBySearchTerm($searchTerm);
 
         if($product != null) //cache hit - return results from mysql table
         {
