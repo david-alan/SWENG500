@@ -57,13 +57,13 @@ class DefaultController extends Controller
     {
         //$json = $request->request->get('json'); // POST param
         $json = $request->getContent(); //JSON sent as body of POST request
-        $this->addToCache($json);
 
         $client = new Client("product_realm");
         $client->addTransportProvider(new PawlTransportProvider("ws://127.0.0.1:8080/"));
 
         $jsonObject = json_decode($json);
         $tube = $jsonObject->{'searchTerm'};
+        $this->addToCache($json,$tube);
 
         $client->on('open', function (ClientSession $session) use ($json, $tube) {
             // publish an event
@@ -204,14 +204,22 @@ class DefaultController extends Controller
         ));
     }
 
-    private function addToCache($json)
+    private function addToCache($json,$searchTerm)
     {
         $jsonObject = json_decode($json);
         $products = $jsonObject->{'results'};
 
-        $logger = $this->get('logger');
-        $logger->info('===Testing logger===');
-        $logger->info($products);
+        for($i=0; $i< count($products); $i++) {
+            $product = new Product();
+            $product->setSearchTerm($searchTerm);
+            $product->setName($products[$i]->name);
+            $product->setImage($products[$i]->image);
+            $product->setPrice($products[$i]->price);
+            $product->setRating($products[$i]->rating);
+            $product->setDescription($products[$i]->description);
+            $product->setVendor($products[$i]->vendor);
+            $product->setWebsiteURL($products[$i]->websiteURL);
+        }
 
 
     }
