@@ -19,29 +19,44 @@ class Product
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, nullable=false)
+     */
+    protected $searchTerm;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     protected $name;
 
     /**
-     * @ORM\Column(type="decimal", scale=2)
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $image;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $websiteURL;
+
+    /**
+     * @ORM\Column(type="decimal", scale=2, nullable=true)
      */
     protected $price;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    protected $description;
+    protected $rating;
+
+    /**
+     * @ORM\Column(type="text", nullable=false)
+     */
+    protected $vendor;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    protected $uri;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    protected $imagePath;
+    protected $description;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -54,6 +69,28 @@ class Product
     }
 
     /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
+    /**
+     * Set date created
+     *
+     * @param \DateTime $date
+     *
+     * @return Product
+     */
+    private function setCreatedAt(\DateTime $date)
+    {
+        $this->createdAt = $date;
+
+        return $this;
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -61,6 +98,30 @@ class Product
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set searchTerm
+     *
+     * @param string $searchTerm
+     *
+     * @return Product
+     */
+    public function setSearchTerm($searchTerm)
+    {
+        $this->searchTerm = $searchTerm;
+
+        return $this;
+    }
+
+    /**
+     * Get searchTerm
+     *
+     * @return string
+     */
+    public function getSearchTerm()
+    {
+        return $this->searchTerm;
     }
 
     /**
@@ -88,27 +149,51 @@ class Product
     }
 
     /**
-     * Set image path
+     * Set image
      *
-     * @param string $path
+     * @param string $image
      *
      * @return Product
      */
-    public function setImagePath($path)
+    public function setImage($image)
     {
-        $this->imagePath = $path;
+        $this->image = $image;
 
         return $this;
     }
 
     /**
-     * Get image path
+     * Get image
      *
      * @return string
      */
-    public function getImagePath()
+    public function getImage()
     {
-        return $this->imagePath;
+        return $this->image;
+    }
+
+    /**
+     * Set websiteURL
+     *
+     * @param string $websiteURL
+     *
+     * @return Product
+     */
+    public function setWebsiteURL($websiteURL)
+    {
+        $this->websiteURL = $websiteURL;
+
+        return $this;
+    }
+
+    /**
+     * Get websiteURL
+     *
+     * @return string
+     */
+    public function getWebsiteURL()
+    {
+        return $this->websiteURL;
     }
 
     /**
@@ -136,6 +221,54 @@ class Product
     }
 
     /**
+     * Set rating
+     *
+     * @param string $rating
+     *
+     * @return Product
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    /**
+     * Get rating
+     *
+     * @return string
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * Set vendor
+     *
+     * @param string $vendor
+     *
+     * @return Product
+     */
+    public function setVendor($vendor)
+    {
+        $this->vendor = $vendor;
+
+        return $this;
+    }
+
+    /**
+     * Get vendor
+     *
+     * @return string
+     */
+    public function getVendor()
+    {
+        return $this->vendor;
+    }
+
+    /**
      * Set description
      *
      * @param string $description
@@ -160,25 +293,12 @@ class Product
     }
 
     /**
-     * @ORM\PrePersist
-     */
-    public function setCreatedAtValue()
-    {
-        $this->createdAt = new \DateTime();
-    }
-
-    /**
-     * Set date created
+     * Get createdAt
      *
-     * @param \DateTime $date
-     *
-     * @return Product
+     * @return \DateTime
      */
-    private function setCreatedAt(\DateTime $date)
+    public function getCreatedAt()
     {
-        $this->createdAt = $date;
-
-        return $this;
+        return $this->createdAt;
     }
-
 }
