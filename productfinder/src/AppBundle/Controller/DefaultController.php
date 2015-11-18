@@ -99,13 +99,13 @@ class DefaultController extends Controller
         //check to see if keyword exists in product table
         $repository = $this->getDoctrine()
             ->getRepository('AppBundle:Product');
-        $product = $repository->findBySearchTerm($searchTerm);
+        $products = $repository->findBySearchTerm($searchTerm);
 
-        if($product != null) //cache hit - return results from mysql table
+        if($products != null) //cache hit - return results from mysql table
         {
             return $this->render('default/searchResults.html.twig', array(
                 'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
-                'searchResults' => $product,
+                'searchResults' => $products,
                 'searchTerm' => $searchTerm
             ));
         } else { //cache miss - invoke scrapers
