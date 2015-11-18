@@ -219,6 +219,10 @@ class DefaultController extends Controller
             $product->setDescription($products[$i]->description);
             $product->setVendor($products[$i]->vendor);
             $product->setWebsiteURL($products[$i]->websiteURL);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
         }
 
 
