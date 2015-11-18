@@ -49,10 +49,12 @@
         // 1) subscribe to a topic
         function onevent(args) {
 
-            console.log("event occured")
+            console.log("event occured");
 
             var json = JSON.stringify(eval("(" + args[0] + ")"));
             var parser = jQuery.parseJSON( json );
+            console.log("number of results:");
+            console.log(parser.results.length);
 
             for(var i = 0; i < parser.results.length; i++)
             {
@@ -109,7 +111,7 @@
         div += "</div>";
         $("#resultsSet").append(div);
     }
-
+ */
     //format prices
     function formatRating(rating)
     {
@@ -134,7 +136,7 @@
 
         return price;
     }
-*/
+
 
     </script>
 {% endblock %}
