@@ -21,8 +21,8 @@
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
 		"videlalvaro/php-amqplib": "2.5.*",
-        "cboden/ratchet": "0.3.*",
-        "voryx/thruway": "0.3.*"
+        "voryx/thruway": "0.3.*",
+        "guzzlehttp/guzzle": "^6.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
