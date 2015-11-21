@@ -69,14 +69,6 @@ class Product
     }
 
     /**
-     * @ORM\PrePersist
-     */
-    public function setCreatedAtValue()
-    {
-        $this->createdAt = new \DateTime();
-    }
-
-    /**
      * Set date created
      *
      * @param \DateTime $date
