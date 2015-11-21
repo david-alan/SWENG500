@@ -6,19 +6,33 @@ use Thruway\ClientSession;
 use Thruway\Peer\Client;
 use Thruway\Transport\PawlTransportProvider;
 
-class PublishService
+class PublishService extends Controller\DefaultController
 {
-    public function __construct($json)
+    public function __construct($host, $port, $realm)
     {
-        $client = new Client("product_realm");
-        $client->addTransportProvider(new PawlTransportProvider("ws://127.0.0.1:8080/"));
+        $this->host  = $host;
+        $this->port  = $port;
+        $this->realm = $realm;
+    }
 
-        $jsonObject = json_decode($json);
+    public function sendPayload($payload)
+    {
+        $client = new Client($this->realm);
+        $client->addTransportProvider(new PawlTransportProvider("ws://{$this->host}:{$this->port}/"));
+
+        $jsonObject = json_decode($payload);
         $tube = $jsonObject->{'searchTerm'};
 
-        $client->on('open', function (ClientSession $session) use ($json, $tube) {
+$logger = $this->get('logger');
+$logger->error("tube is: " . $tube);
+$logger->error($jsonObject);
+$logger->error($this->host);
+$logger->error($this->port);
+$logger->error($this->realm);
+
+        $client->on('open', function (ClientSession $session) use ($payload, $tube) {
             // publish an event
-            $session->publish($tube, [$json], [], ["acknowledge" => true])->then(
+            $session->publish($tube, [$payload], [], ["acknowledge" => true])->then(
                 function () {
                     echo "Publish Acknowledged!\n";
                     die(); //??? need to die out to keep it from going forever?
@@ -29,7 +43,6 @@ class PublishService
                 }
             );
         });
-
         $client->start();
     }
 }
