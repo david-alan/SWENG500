@@ -1,12 +1,13 @@
 <?php
 
-namespace AppBundle;
+namespace AppBundle\Services;
 
 use Thruway\ClientSession;
 use Thruway\Peer\Client;
 use Thruway\Transport\PawlTransportProvider;
+use AppBundle\Controller\DefaultController;
 
-class PublishService extends Controller\DefaultController
+class PublishService extends DefaultController
 {
     public function __construct($host, $port, $realm)
     {
