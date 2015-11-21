@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\PublishService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +30,6 @@ class DefaultController extends Controller
     {
         $session = $request->getSession();
         $session->start();
-        //var_dump($session->get('userName'));
 
         $userName = $session->get('userName');
         return $this->render('default/index.html.twig', array(
@@ -52,12 +52,16 @@ class DefaultController extends Controller
      * @Route("/broadcast", name="broadcast")
      *
      * Distribute the JSON sent as a POST request to subscribers
+     * (note: our webscrapers are sending the JSON as the response
+     * body rather than a parameter)
      */
     public function broadcastToClients(Request $request)
     {
         //$json = $request->request->get('json'); // POST param
         $json = $request->getContent(); //JSON sent as body of POST request
 
+        $this->get('publish_service')->sendPayload($json);
+        /*
         $client = new Client("product_realm");
         $client->addTransportProvider(new PawlTransportProvider("ws://127.0.0.1:8080/"));
 
@@ -80,6 +84,7 @@ class DefaultController extends Controller
         });
 
         $client->start();
+        */
     }
 
     /**
@@ -224,8 +229,5 @@ class DefaultController extends Controller
             $em->persist($product);
             $em->flush();
         }
-
-
     }
-
 }

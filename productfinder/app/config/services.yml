@@ -9,3 +9,6 @@ services:
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
     app.user_verify_controller:
       class: AppBundle\Controller\UserVerifyController
+    publish_service:
+      class: AppBundle\PublishService
+      arguments: [json]
