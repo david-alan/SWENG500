@@ -11,11 +11,13 @@ class PublishService extends DefaultController
 {
     public function __construct($host, $port, $realm)
     {
+        /*
         $logger = $this->get('logger');
         $logger->error("in constructor");
         $logger->error($this->host);
         $logger->error($this->port);
         $logger->error($this->realm);
+        */
 
         $this->host  = $host;
         $this->port  = $port;
@@ -29,14 +31,14 @@ class PublishService extends DefaultController
 
         $jsonObject = json_decode($payload);
         $tube = $jsonObject->{'searchTerm'};
-
+/*
 $logger = $this->get('logger');
 $logger->error("tube is: " . $tube);
 $logger->error($jsonObject);
 $logger->error($this->host);
 $logger->error($this->port);
 $logger->error($this->realm);
-
+*/
         $client->on('open', function (ClientSession $session) use ($payload, $tube) {
             // publish an event
             $session->publish($tube, [$payload], [], ["acknowledge" => true])->then(
