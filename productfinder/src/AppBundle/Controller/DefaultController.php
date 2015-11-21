@@ -60,7 +60,7 @@ class DefaultController extends Controller
         //$json = $request->request->get('json'); // POST param
         $json = $request->getContent(); //JSON sent as body of POST request
 $logger = $this->get('logger');
-$logger->error("get()");
+$logger->error("get() called");
 
         $publisher = $this->get('publish_service');
 $logger->error("calling sendpaload()");
