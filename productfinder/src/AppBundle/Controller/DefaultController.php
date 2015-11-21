@@ -59,8 +59,13 @@ class DefaultController extends Controller
     {
         //$json = $request->request->get('json'); // POST param
         $json = $request->getContent(); //JSON sent as body of POST request
+$logger = $this->get('logger');
+$logger->error("get()");
 
-        $this->get('publish_service')->sendPayload($json);
+        $publisher = $this->get('publish_service');
+$logger->error("calling sendpaload()");
+
+        $publisher->sendPayload($json);
         /*
         $client = new Client("product_realm");
         $client->addTransportProvider(new PawlTransportProvider("ws://127.0.0.1:8080/"));
