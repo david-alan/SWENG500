@@ -10,6 +10,12 @@ class PublishService extends Controller\DefaultController
 {
     public function __construct($host, $port, $realm)
     {
+        $logger = $this->get('logger');
+        $logger->error("in constructor");
+        $logger->error($this->host);
+        $logger->error($this->port);
+        $logger->error($this->realm);
+
         $this->host  = $host;
         $this->port  = $port;
         $this->realm = $realm;
