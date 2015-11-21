@@ -62,6 +62,7 @@ class DefaultController extends Controller
 
         $this->container->get('publish_service')->sendPayload($json);
         $this->container->get('cache_service')->addCache($json);
+        $this->container->get('cache_service')->addLogger($this->get('logger'));
     }
 
     /**

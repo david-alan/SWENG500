@@ -6,8 +6,13 @@ use AppBundle\Controller\DefaultController;
 
 class CacheService extends DefaultController
 {
+    private $logger;
+
     public function addCache($json)
     {
+
+        $this->logger->error('An error occurred');
+
         $jsonObject = json_decode($json);
         $products   = $jsonObject->{'results'};
         $searchTerm = $jsonObject->{'searchTerm'};
@@ -28,5 +33,10 @@ class CacheService extends DefaultController
             $em->flush();
         }
 
+    }
+
+    public function addLogger($logger)
+    {
+        $this->logger = $logger;
     }
 }
