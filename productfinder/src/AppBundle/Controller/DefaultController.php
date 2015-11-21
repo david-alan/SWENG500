@@ -65,7 +65,7 @@ $logger->error("get() called");
         $publisher = $this->container->get('publish_service');
 
 $logger->error("calling sendpaload()");
-        die();
+
         $publisher->sendPayload($json);
         /*
         $client = new Client("product_realm");
