@@ -15,3 +15,5 @@ services:
     publish_service:
       class: AppBundle\Services\PublishService
       arguments: ["%publish_service.host%","%publish_service.port%","%publish_service.realm%"]
+    cache_service:
+      class: AppBundle\Services\CacheService
