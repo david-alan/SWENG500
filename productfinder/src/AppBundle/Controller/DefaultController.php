@@ -62,9 +62,10 @@ class DefaultController extends Controller
 $logger = $this->get('logger');
 $logger->error("get() called");
 
-        $publisher = $this->get('publish_service');
-$logger->error("calling sendpaload()");
+        $publisher = $this->container->get('publish_service');
 
+$logger->error("calling sendpaload()");
+        die();
         $publisher->sendPayload($json);
         /*
         $client = new Client("product_realm");
