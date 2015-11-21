@@ -97,3 +97,5 @@ services:
     publish_service:
       class: AppBundle\Services\PublishService
       arguments: ["%publish_service.host%", "%publish_service.port%","%publish_service.realm%"]
+      calls:
+            - [ setContainer, [ @service_container ]]
