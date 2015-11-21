@@ -1,6 +1,9 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
+     publish_service.host = 127.0.0.1
+     publish_service.port = 8080
+     publish_service.realm = product_realm
 #    parameter_name: value
 
 services:
@@ -10,5 +13,5 @@ services:
     app.user_verify_controller:
       class: AppBundle\Controller\UserVerifyController
     publish_service:
-      class: AppBundle\PublishService
-      arguments: [json]
+      class: AppBundle\Services\PublishService
+      arguments: ["%publish_service.host%","%publish_service.port%","%publish_service.realm%"]

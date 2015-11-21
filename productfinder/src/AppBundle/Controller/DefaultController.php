@@ -60,31 +60,8 @@ class DefaultController extends Controller
         //$json = $request->request->get('json'); // POST param
         $json = $request->getContent(); //JSON sent as body of POST request
 
-        $this->get('publish_service')->sendPayload($json);
-        /*
-        $client = new Client("product_realm");
-        $client->addTransportProvider(new PawlTransportProvider("ws://127.0.0.1:8080/"));
+        $this->container->get('publish_service')->sendPayload($json);
 
-        $jsonObject = json_decode($json);
-        $tube = $jsonObject->{'searchTerm'};
-        $this->addToCache($json,$tube);
-
-        $client->on('open', function (ClientSession $session) use ($json, $tube) {
-            // publish an event
-            $session->publish($tube, [$json], [], ["acknowledge" => true])->then(
-                function () {
-                    echo "Publish Acknowledged!\n";
-                    die(); //??? need to die out to keep it from going forever?
-                },
-                function ($error) {
-                    // publish failed
-                    echo "Publish Error {$error}\n";
-                }
-            );
-        });
-
-        $client->start();
-        */
     }
 
     /**
