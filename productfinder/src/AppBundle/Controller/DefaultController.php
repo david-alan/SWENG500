@@ -61,6 +61,8 @@ class DefaultController extends Controller
         $json = $request->getContent(); //JSON sent as body of POST request
 
         $this->container->get('publish_service')->sendPayload($json);
+        $this->get('logger');
+        $this->error("find_me");
         $this->container->get('cache_service')->addCache($json);
         $this->container->get('cache_service')->addLogger($this->get('logger'));
     }
