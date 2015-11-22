@@ -7,9 +7,14 @@ use AppBundle\Controller\DefaultController;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-class CacheService extends ContainerAwareCommand
+class CacheService 
 {
     private $logger;
+
+    public function __construct(EntityManager $entityManager)
+    {
+        $this->em = $entityManager;
+    }
 
     public function addCache($json)
     {
@@ -31,11 +36,12 @@ class CacheService extends ContainerAwareCommand
             $product->setVendor($products[$i]->vendor);
             $product->setWebsiteURL($products[$i]->websiteURL);
 
-            $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
+            //$this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
+
             //$em = $this->em->getDoctrine()->getManager();
-/*            $em->persist($product);
-            $em->flush();
-*/
+/           $this->em->persist($product);
+            $this->em->flush();
+//*/
         }
 
     }
