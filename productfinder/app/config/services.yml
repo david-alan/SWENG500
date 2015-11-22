@@ -18,4 +18,3 @@ services:
     cache_service:
       class: AppBundle\Services\CacheService
       arguments: [@doctrine.orm.entity_manager]
-      

@@ -64,11 +64,12 @@ class DefaultController extends Controller
         $this->container->get('cache_service')->addCache($json);
         $this->container->get('publish_service')->sendPayload($json);
         $logger->error('find_me_1');
-
+/*
         $this->container->get('cache_service')->addCache($json);
         $logger->error('find_me_2');
         $this->container->get('cache_service')->addLogger($this->get('logger'));
         $logger->error('find_me_3');
+*/
     }
 
     /**
