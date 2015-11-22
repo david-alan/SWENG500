@@ -7,7 +7,7 @@ use AppBundle\Controller\DefaultController;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-class CacheService 
+class CacheService
 {
     private $logger;
 
@@ -39,7 +39,7 @@ class CacheService
             //$this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
             //$em = $this->em->getDoctrine()->getManager();
-/           $this->em->persist($product);
+           $this->em->persist($product);
             $this->em->flush();
 //*/
         }
