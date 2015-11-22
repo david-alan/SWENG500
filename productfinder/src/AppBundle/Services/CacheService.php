@@ -4,8 +4,9 @@ namespace AppBundle\Services;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Product;
 use AppBundle\Controller\DefaultController;
+use Symfony\Component\DependencyInjection\ContainerAware;
 
-class CacheService
+class CacheService extends ContainerAware
 {
     private $logger;
 
@@ -34,7 +35,8 @@ class CacheService
             $product->setVendor($products[$i]->vendor);
             $product->setWebsiteURL($products[$i]->websiteURL);
 
-            $em = $this->em->getDoctrine()->getManager();
+            $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
+            //$em = $this->em->getDoctrine()->getManager();
 /*            $em->persist($product);
             $em->flush();
 */
