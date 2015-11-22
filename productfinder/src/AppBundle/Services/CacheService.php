@@ -34,7 +34,7 @@ class CacheService extends DefaultController
             $product->setVendor($products[$i]->vendor);
             $product->setWebsiteURL($products[$i]->websiteURL);
 
-            $em = $this->getDoctrine()->getManager();
+          //  $em = $this->getDoctrine()->getManager();
 /*            $em->persist($product);
             $em->flush();
 */
