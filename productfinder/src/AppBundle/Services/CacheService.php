@@ -5,15 +5,11 @@ use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Product;
 use AppBundle\Controller\DefaultController;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-class CacheService extends ContainerAware
+class CacheService extends ContainerAwareCommand
 {
     private $logger;
-
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->em = $entityManager;
-    }
 
     public function addCache($json)
     {
