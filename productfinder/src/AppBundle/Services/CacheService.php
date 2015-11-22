@@ -5,13 +5,13 @@ use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Product;
 use AppBundle\Controller\DefaultController;
 
-class CacheService extends DefaultController
+class CacheService
 {
     private $logger;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->em = $em;
+        $this->em = $entityManager;
     }
 
     public function addCache($json)
@@ -34,7 +34,7 @@ class CacheService extends DefaultController
             $product->setVendor($products[$i]->vendor);
             $product->setWebsiteURL($products[$i]->websiteURL);
 
-          //  $em = $this->getDoctrine()->getManager();
+            $em = $this->em->getDoctrine()->getManager();
 /*            $em->persist($product);
             $em->flush();
 */
