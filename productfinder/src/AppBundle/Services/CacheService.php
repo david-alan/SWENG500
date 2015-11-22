@@ -11,7 +11,7 @@ class CacheService extends DefaultController
     public function addCache($json)
     {
 
-        $this->logger->error('An error occurred');
+//        $this->logger->error('An error occurred');
 
         $jsonObject = json_decode($json);
         $products   = $jsonObject->{'results'};
