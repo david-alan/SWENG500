@@ -16,7 +16,7 @@ class CacheService extends DefaultController
         $jsonObject = json_decode($json);
         $products   = $jsonObject->{'results'};
         $searchTerm = $jsonObject->{'searchTerm'};
-
+return;
         for($i=0; $i< count($products); $i++) {
             $product = new Product();
             $product->setSearchTerm($searchTerm);
