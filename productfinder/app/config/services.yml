@@ -17,4 +17,4 @@ services:
       arguments: ["%publish_service.host%","%publish_service.port%","%publish_service.realm%"]
     cache_service:
       class: AppBundle\Services\CacheService
-      arguments: [@doctrine.orm.entity_manager]
+      #arguments: [@doctrine.orm.entity_manager]
