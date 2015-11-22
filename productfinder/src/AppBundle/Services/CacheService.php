@@ -1,12 +1,18 @@
 <?php
 namespace AppBundle\Services;
 
+use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Product;
 use AppBundle\Controller\DefaultController;
 
 class CacheService extends DefaultController
 {
     private $logger;
+
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
 
     public function addCache($json)
     {
