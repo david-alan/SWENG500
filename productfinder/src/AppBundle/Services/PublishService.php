@@ -29,7 +29,7 @@ class PublishService extends DefaultController
             $session->publish($tube, [$payload], [], ["acknowledge" => true])->then(
                 function () {
                     echo "Publish Acknowledged!\n";
-                    //die(); //??? need to die out to keep it from going forever?
+                    die(); //??? need to die out to keep it from going forever?
                 },
                 function ($error) {
                     // publish failed
