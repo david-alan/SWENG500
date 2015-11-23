@@ -90,7 +90,7 @@ class DefaultController extends Controller
                 'searchTerm' => $searchTerm
             ));
         } else { //cache miss - place in queue and invoke scrapers
-            $this->get('queue_service')->enqueue($searchTerm);
+            $this->container->get('queue_service')->enqueue($searchTerm);
 
             return $this->render('default/searchResults.html.twig', array(
                 'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
