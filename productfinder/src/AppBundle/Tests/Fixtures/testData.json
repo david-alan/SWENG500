@@ -1,0 +1,23 @@
+{
+  "searchTerm" : "stapler",
+  "results" : [
+    {
+        "name" : "my red stapler",
+        "image" : "http://example.com/test_image.png",
+        "vendor" : "Amazon",
+        "description" : "lorem ipsum",
+        "price" : "$123.00",
+        "rating" : "2",
+        "websiteURL" : "http://example.com/link_to_product"
+    },
+    {
+        "name" : "bright red stapler",
+        "image" : "http://example.com/test_image_2.png",
+        "vendor" : "Amazon",
+        "description" : "lorem ipsum best stapler evar!",
+        "price" : "$5.00",
+        "rating" : "3",
+        "websiteURL" : "http://example.com/link_to_product_2"
+    }
+  ]
+}
