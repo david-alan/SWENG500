@@ -4,9 +4,13 @@
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
 parameters:
-     publish_service.host : 127.0.0.1
-     publish_service.port : 8080
-     publish_service.realm : product_realm
+     publish_service.host: 127.0.0.1
+     publish_service.port: 8080
+     publish_service.realm: product_realm
+     queue_service.host: localhost
+     queue_service.port: 5672
+     queue_service.username: queue_user
+     queue_service.password: BVfDqRGK9Y3G
 
 services:
     app.user_verify_controller:
@@ -17,3 +21,6 @@ services:
     cache_service:
       class: AppBundle\Services\CacheService
       arguments: [@doctrine.orm.entity_manager]
+    queue_service:
+      class: AppBundle\Services\QueueService
+      arguments: ["%queue_service.host%","%queue_service.port%","%queue_service.username%","%queue_service.password%"]
