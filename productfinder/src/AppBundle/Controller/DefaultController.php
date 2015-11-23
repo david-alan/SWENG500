@@ -60,8 +60,8 @@ class DefaultController extends Controller
         //$json = $request->request->get('json'); // POST param
         $json = $request->getContent(); //JSON sent as body of POST request
 
-        $this->container->get('publish_service')->sendPayload($json);
         $this->container->get('cache_service')->addCache($json);
+        $this->container->get('publish_service')->sendPayload($json);
     }
 
     /**
