@@ -76,43 +76,21 @@ class DefaultController extends Controller
         }
 
         $session->start();//maybe use session->getSession() or something?
-        $sessionId = $session->getId();
         $searchTerm = $request->request->get('searchQuery');
 
         //check to see if keyword exists in product table
-        $repository = $this->getDoctrine()
-            ->getRepository('AppBundle:Product');
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Product');
         $products = $repository->findBySearchTerm($searchTerm);
 
-        if($products != null) //cache hit - return results from mysql table
+        if($products != null) //cache hit - return results from db cache
         {
             return $this->render('default/searchResults.html.twig', array(
                 'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
                 'searchResults' => $products,
                 'searchTerm' => $searchTerm
             ));
-        } else { //cache miss - invoke scrapers
-            // put it in the queue
-
-            //sudo rabbitmqctl set_user_permissions queue_user ".*" ".*" ".*"
-            $queueName ='products';
-            $queueValue = $searchTerm;
-
-            //TODO: get username, port, pass from config file
-            $connection = new AMQPStreamConnection('localhost', 5672, 'queue_user', 'BVfDqRGK9Y3G');
-
-            $channel = $connection->channel();
-            $channel->queue_declare($queueName, false, true, false, false);
-
-            $msg = new AMQPMessage($queueValue,
-                array('delivery_mode' => 2) # make message persistent (flush to disk)
-            );
-
-            $channel->basic_publish($msg, '', $queueName);
-
-            echo " [x] placed in '$searchTerm' queue:  $queueValue\n";
-            $channel->close();
-            $connection->close();
+        } else { //cache miss - place in queue and invoke scrapers
+            $this->get('queue_service')->enqueue($searchTerm);
 
             return $this->render('default/searchResults.html.twig', array(
                 'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
@@ -129,6 +107,7 @@ class DefaultController extends Controller
     {
         $session = $request->getSession();
         $session->invalidate();
+
         return $this->redirectToRoute('homePage');
     }
 
