@@ -146,11 +146,15 @@ class DefaultController extends Controller
 
         if($createAccountForm->isValid()) {
             try {
+                //salt & hash the password on new accounts
+                $cypherPassword = $this->container->get('password_service')->hashPassword($user->getPassword());
+                $user->setPassword($cypherPassword);
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
             } catch (\Exception $e) {
-//TODO: add flashbag error for duplicate username
+                //TODO: add flashbag error for duplicate username
                 return $this->redirectToRoute('loginForm');
             }
 

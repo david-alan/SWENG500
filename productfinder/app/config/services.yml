@@ -24,3 +24,5 @@ services:
     queue_service:
       class: AppBundle\Services\QueueService
       arguments: ["%queue_service.host%","%queue_service.port%","%queue_service.username%","%queue_service.password%"]
+    password_service:
+      class: AppBundle\Services\PasswordService
