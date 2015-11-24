@@ -79,6 +79,7 @@ class DefaultController extends Controller
         $searchTerm = $request->request->get('searchQuery');
 
         //check to see if keyword exists in product table
+
         $repository = $this->getDoctrine()->getRepository('AppBundle:Product');
         $products = $repository->findBySearchTerm($searchTerm);
 
@@ -130,9 +131,8 @@ class DefaultController extends Controller
             try {
                 $repository = $this->getDoctrine()->getRepository(User::class);
                 $userSearch = $repository->findOneByEmail($user->getEmail());
-//check password is valid
-
-                if($user->verifyPassword($request->request->get('login[password]'))){
+    //check password is valid
+                if($this->container->get('password_service')->verifyPassword($user, $request->request->get('login[password]'))) {
                     $session->set('userName',$userSearch->getEmail());
                     return $this->redirectToRoute('homePage');
                 } else {
