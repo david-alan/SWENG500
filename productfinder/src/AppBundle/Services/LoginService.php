@@ -9,9 +9,10 @@ class LoginService extends DefaultController
 {
     private $em;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, $passwordService)
     {
         $this->em = $entityManager;
+        $this->passwordService = $passwordService;
     }
 
     public function logUserIn(User $user, $password)
@@ -20,8 +21,7 @@ class LoginService extends DefaultController
         $userSearch = $repository->findOneByEmail($user->getEmail());
 
         //check password is valid
-        if($this->container->get('password_service')
-            ->verifyPassword($userSearch, $password)) {
+        if($this->passwordService->verifyPassword($userSearch, $password)) {
                 return $userSearch->getEmail();
         }
         return false;
@@ -30,7 +30,7 @@ class LoginService extends DefaultController
     public function createAccountAndLogUserIn(User $user)
     {
         //salt & hash the password on new accounts
-        $cypherPassword = $this->container->get('password_service')->hashPassword($user->getPassword());
+        $cypherPassword = $this->passwordService->hashPassword($user->getPassword());
         $user->setPassword($cypherPassword);
 
         $this->em->persist($user);
