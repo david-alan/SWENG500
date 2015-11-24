@@ -28,12 +28,12 @@ class UserVerifyController extends Controller{
             return $this->validationFailed();
         }
 
-       return $this->comparePassword($password,$user->getPassword());
+       return $this->comparePassword($user, $password);
     }
 
-    private function comparePassword($userSubmittedPassword, $dbPassword)
+    private function comparePassword($user, $userSubmittedPassword)
     {
-        if($userSubmittedPassword ==  $dbPassword ) {
+        if($this->container->get('password_service')->verifyPassword($user, $userSubmittedPassword)) {
             return $this->validationSucceeded();
         } else {
             return $this->validationFailed();
