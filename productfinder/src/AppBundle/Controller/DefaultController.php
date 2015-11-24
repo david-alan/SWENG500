@@ -128,43 +128,27 @@ class DefaultController extends Controller
         $session->start();
 
         if($loginForm->isValid()) {
-            try {
-                $repository = $this->getDoctrine()->getRepository(User::class);
-                $userSearch = $repository->findOneByEmail($user->getEmail());
+            $userEmail = $this->container->get('login_service')->logUserIn($user,$request->request->get('login')['password']);
 
-                //check password is valid
-                if($this->container->get('password_service')
-                    ->verifyPassword($userSearch, $request->request->get('login')['password'])) {
-
-                    $session->set('userName',$userSearch->getEmail());
-                    return $this->redirectToRoute('homePage');
-
-                } else {
-                    throw new \Exception('username and password do not match');
-                }
-            } catch (\Exception $e) {
+            if($userEmail) {
+                $session->set('userName', $userEmail);
+                return $this->redirectToRoute('homePage');
+            } else {
                 //TODO: add flashbag error for db errors
                 return $this->redirectToRoute('loginForm');
             }
         }
 
         if($createAccountForm->isValid()) {
-            try {
-                //salt & hash the password on new accounts
-                $cypherPassword = $this->container->get('password_service')->hashPassword($user->getPassword());
-                $user->setPassword($cypherPassword);
+             $userEmail = $this->container->get('login_service')->createAccountAndLogUserIn($user);
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
-            } catch (\Exception $e) {
-                //TODO: add flashbag error for duplicate username
+            if($userEmail) {
+                $session->set('userName', $userEmail);
+                return $this->redirectToRoute('homePage');
+            } else {
+                //TODO: add flashbag error for db errors
                 return $this->redirectToRoute('loginForm');
             }
-
-            $formData = $request->request->get('createAccount');
-            $session->set('userName',$formData['email']);
-            return $this->redirectToRoute('homePage');
         }
 
         return $this->render('login/loginForm.html.twig', array(

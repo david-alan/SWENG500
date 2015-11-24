@@ -14,7 +14,7 @@ class LoginService extends DefaultController
         $this->em = $entityManager;
     }
 
-    public function logUserIn($user, $password)
+    public function logUserIn(User $user, $password)
     {
         $repository = $this->em->getRepository(User::class);
         $userSearch = $repository->findOneByEmail($user->getEmail());
@@ -25,5 +25,16 @@ class LoginService extends DefaultController
                 return $userSearch->getEmail();
         }
         return false;
+    }
+
+    public function createAccountAndLogUserIn(User $user)
+    {
+        //salt & hash the password on new accounts
+        $cypherPassword = $this->container->get('password_service')->hashPassword($user->getPassword());
+        $user->setPassword($cypherPassword);
+
+        $this->em->persist($user);
+        $this->em->flush();
+        return $user->getEmail();
     }
 }
