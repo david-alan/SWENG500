@@ -21,7 +21,7 @@ class LoginService extends DefaultController
         $userSearch = $repository->findOneByEmail($user->getEmail());
 
         //check password is valid
-        if($user != null && $this->passwordService->verifyPassword($userSearch, $password)) {
+        if($userSearch != null && $this->passwordService->verifyPassword($userSearch, $password)) {
                 return $userSearch->getEmail();
         }
         return false;
