@@ -131,10 +131,14 @@ class DefaultController extends Controller
             try {
                 $repository = $this->getDoctrine()->getRepository(User::class);
                 $userSearch = $repository->findOneByEmail($user->getEmail());
-    //check password is valid
-                if($this->container->get('password_service')->verifyPassword($user, $request->request->get('login[password]'))) {
+
+                //check password is valid
+                if($this->container->get('password_service')
+                    ->verifyPassword($userSearch, $request->request->get('login')['password'])) {
+
                     $session->set('userName',$userSearch->getEmail());
                     return $this->redirectToRoute('homePage');
+
                 } else {
                     throw new \Exception('username and password do not match');
                 }
