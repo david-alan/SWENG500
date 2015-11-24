@@ -26,3 +26,6 @@ services:
       arguments: ["%queue_service.host%","%queue_service.port%","%queue_service.username%","%queue_service.password%"]
     password_service:
       class: AppBundle\Services\PasswordService
+    login_service:
+          class: AppBundle\Services\LoginService
+          arguments: [@doctrine.orm.entity_manager]
