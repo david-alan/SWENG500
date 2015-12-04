@@ -19,5 +19,4 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     {
         $this->product = new Product();
     }
-
 }

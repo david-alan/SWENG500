@@ -5,13 +5,22 @@ use AppBundle\Entity\User;
 
 class UserTest extends \PHPUnit_Framework_TestCase
 {
-    //test getter/setter for userName field
-    public function testUserName()
+    //test getter/setter for email field
+    public function testEmail()
     {
-        $expectedUserName = 'sweng500user';
-        $this->user->setUserName($expectedUserName);
+        $expectedEmail = 'sweng500user@test.com';
+        $this->user->setEmail($expectedEmail);
 
-        $this->assertEquals($expectedUserName, $this->user->getUserName());
+        $this->assertEquals($expectedEmail, $this->user->getEmail());
+    }
+
+    //test getter/setter for userName field
+    public function testPassword()
+    {
+        $expectedPassword = 'sweng500user@test.com';
+        $this->user->setPassword($expectedPassword);
+
+        $this->assertEquals($expectedPassword, $this->user->getPassword());
     }
 
     //this function runs before each test runs
