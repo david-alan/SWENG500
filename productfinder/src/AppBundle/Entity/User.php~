@@ -8,8 +8,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  * @ORM\Entity
  * @ORM\Table(name="user")
  *
+ * TODO: inject doctrine entitymanager into constructor
+ * rather than extending Controller - quick hack to get
+ * access to doctrine
  */
-class User
+class User extends Controller
 {
     /**
      * @ORM\Column(type="integer")
@@ -84,5 +87,36 @@ class User
     public function getPassword()
     {
         return $this->password;
+    }
+
+    public function getPlaintextPassword()
+    {
+        return $this->plaintextPassword;
+    }
+
+    public function setPlaintextPassword($password)
+    {
+        $this->plaintextPassword = $password;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function verifyPassword($plainTextPassword)
+    {
+        var_dump($this->getEmail());
+
+        $user = $this->getDoctrine()
+            ->getRepository('AppBundle:User');
+            //->findByEmail($this->getEmail());
+        die('here');
+        if (!$user) {
+            return false;
+        }
+var_dump($plainTextPassword);
+        var_dump($user->password);
+        die();
+        return ($plainTextPassword == $user->password);
     }
 }

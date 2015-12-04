@@ -36,5 +36,7 @@ class QueueService
 
         $channel->close();
         $connection->close();
+
+        return true;
     }
 }
